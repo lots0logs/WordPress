@@ -333,7 +333,7 @@ function wp_debug_mode() {
 		error_reporting( E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_WARNING | E_PARSE | E_USER_ERROR | E_USER_WARNING | E_RECOVERABLE_ERROR );
 	}
 
-	if ( defined( 'XMLRPC_REQUEST' ) || defined( 'REST_REQUEST' ) || ( defined( 'WP_INSTALLING' ) && WP_INSTALLING ) || wp_doing_ajax() ) {
+	if ( defined( 'XMLRPC_REQUEST' ) || wp_doing_rest() || ( defined( 'WP_INSTALLING' ) && WP_INSTALLING ) || wp_doing_ajax() ) {
 		@ini_set( 'display_errors', 0 );
 	}
 }
@@ -1077,6 +1077,24 @@ function wp_doing_cron() {
 	 * @param bool $wp_doing_cron Whether the current request is a WordPress cron request.
 	 */
 	return apply_filters( 'wp_doing_cron', defined( 'DOING_CRON' ) && DOING_CRON );
+}
+
+/**
+ * Determines if the current request is a WordPress Rest API request.
+ *
+ * @since 4.9.0
+ *
+ * @return bool True if it's a WordPress Rest API request, false otherwise.
+ */
+function wp_doing_rest() {
+	/**
+	 * Filters whether or not the current request is a WordPress Rest API request.
+	 *
+	 * @since 4.9.0
+	 *
+	 * @param bool $wp_doing_rest Whether or not the current request is a WordPress Rest API request.
+	 */
+	return apply_filters( 'wp_doing_rest', defined( 'REST_REQUEST' ) && REST_REQUEST );
 }
 
 /**
